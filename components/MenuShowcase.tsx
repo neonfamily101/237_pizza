@@ -1,117 +1,73 @@
-'use client'
+'use client';
 
-import { useState, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState, useRef } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Flame, ShieldCheck, Pizza, Star, Leaf } from 'lucide-react'; // 기존 아이콘은 사용되지 않지만, 혹시 모를 확장을 위해 남겨둡니다.
+
+// 메뉴 아이템 타입을 정의합니다.
+interface MenuItem {
+  name: string;
+  description: string;
+  image: string;
+  price: string;
+}
+
+// 메뉴 카테고리 타입을 정의합니다.
+interface MenuCategory {
+  id: number;
+  name: string;
+  items: MenuItem[];
+}
 
 const MenuShowcase = () => {
-  const [activeTab, setActiveTab] = useState(0)
-  const [showAllMenus, setShowAllMenus] = useState(false)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [activeTab, setActiveTab] = useState(0);
+  const [showAllMenus, setShowAllMenus] = useState(false);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const menuCategories = [
+  const menuCategories: MenuCategory[] = [
     {
       id: 0,
       name: '피자',
       items: [
-        {
-          name: 'MARINARA ORIGINALE',
-          description: '글루텐 프리 밀가루로 만든 담백한 비건 피자',
-          image: '/image/menu/marinara.jpg',
-          price: '₩15,000'
-        },
-        {
-          name: 'MARGHERITA CLASSICA',
-          description: '전통 나폴리 스타일 피자',
-          image: '/image/menu/margherita.jpg',
-          price: '₩19,000'
-        },
-        {
-          name: 'PESTO ROYALE Bufala',
-          description: '향긋한 바질 소스가 올라간 피자',
-          image: '/image/menu/pesto.jpg',
-          price: '₩25,900'
-        },
-        {
-          name: 'Prosciutto & Gorgonzola',
-          description: '신선한 이탈리아 햄으로 만든 피자',
-          image: '/image/menu/prosciutto.jpg',
-          price: '₩28,500'
-        }
+        { name: 'MARINARA ORIGINALE', description: '글루텐 프리 밀가루로 만든 담백한 비건 피자', image: '/image/menu/marinara.jpg', price: '₩15,000' },
+        { name: 'MARGHERITA CLASSICA', description: '전통 나폴리 스타일 피자', image: '/image/menu/margherita.jpg', price: '₩19,000' },
+        { name: 'PESTO ROYALE Bufala', description: '향긋한 바질 소스가 올라간 피자', image: '/image/menu/pesto.jpg', price: '₩25,900' },
+        { name: 'Prosciutto & Gorgonzola', description: '신선한 이탈리아 햄으로 만든 피자', image: '/image/menu/prosciutto.jpg', price: '₩28,500' }
       ]
     },
     {
       id: 1,
       name: '사이드',
       items: [
-        {
-          name: '237 샐러드',
-          description: '신선한 재료가 듬뿍담긴 샐러드',
-          image: '/image/menu/salad.jpg',
-          price: '₩15,000'
-        },
-        {
-          name: 'Calzone',
-          description: '피자를 반으로 접은 이탈리안 만두',
-          image: '/image/menu/calzone.jpg',
-          price: '₩26,000'
-        },
-        {
-          name: '치즈스틱',
-          description: '쫄깃한 모짜렐라 치즈스틱',
-          image: '/image/menu/cheesestick.jpg',
-          price: '₩7,000'
-        }
+        { name: '237 샐러드', description: '신선한 재료가 듬뿍담긴 샐러드', image: '/image/menu/salad.jpg', price: '₩15,000' },
+        { name: 'Calzone', description: '피자를 반으로 접은 이탈리안 만두', image: '/image/menu/calzone.jpg', price: '₩26,000' },
+        { name: '치즈스틱', description: '쫄깃한 모짜렐라 치즈스틱', image: '/image/menu/cheesestick.jpg', price: '₩7,000' }
       ]
     },
     {
       id: 2,
       name: '음료',
       items: [
-        {
-          name: '콜라',
-          description: '시원한 코카콜라',
-          image: '/image/menu/coke.jpg',
-          price: '₩2,000'
-        },
-        {
-          name: '사이다',
-          description: '상쾌한 스프라이트',
-          image: '/image/menu/sprite.jpg',
-          price: '₩2,000'
-        },
-        {
-          name: '오렌지 주스',
-          description: '100% 오렌지 주스',
-          image: '/image/menu/orangejuice.jpg',
-          price: '₩3,000'
-        }
+        { name: '콜라', description: '시원한 코카콜라', image: '/image/menu/coke.jpg', price: '₩2,000' },
+        { name: '사이다', description: '상쾌한 스프라이트', image: '/image/menu/sprite.jpg', price: '₩2,000' },
+        { name: '오렌지 주스', description: '100% 오렌지 주스', image: '/image/menu/orangejuice.jpg', price: '₩3,000' }
       ]
     }
-  ]
+  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
-  }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
 
-  const MenuCard = ({ item, index }) => (
+  // FIX: item과 index 파라미터에 명시적으로 타입을 지정하여 오류를 해결했습니다.
+  const MenuCard = ({ item, index }: { item: MenuItem; index: number }) => (
     <motion.div
       key={index}
       variants={itemVariants}
@@ -126,14 +82,14 @@ const MenuShowcase = () => {
         />
       </div>
       <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-xl font-bold text-red-800 mb-2 font-gmarket">
+        <h3 className="text-xl font-bold text-red-800 mb-2">
           {item.name}
         </h3>
         <p className="text-gray-600 text-sm mb-4 leading-relaxed flex-grow">
           {item.description}
         </p>
         <div className="flex justify-between items-center mt-4">
-          <span className="text-2xl font-bold text-red-700 font-gmarket">
+          <span className="text-2xl font-bold text-red-700">
             {item.price}
           </span>
           <motion.button
@@ -157,7 +113,7 @@ const MenuShowcase = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-red-800 font-gmarket mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-red-800 mb-4">
             DELICIOUS MENU
           </h2>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
@@ -204,8 +160,7 @@ const MenuShowcase = () => {
             >
               {menuCategories.map(category => (
                 <div key={category.id}>
-                  <h3 className="text-3xl font-bold text-red-800 font-gmarket mb-8 text-center">{category.name}</h3>
-                  {/* --- 수정된 부분: 반응형 정렬 클래스를 더 세분화합니다. --- */}
+                  <h3 className="text-3xl font-bold text-red-800 mb-8 text-center">{category.name}</h3>
                   <motion.div
                     variants={containerVariants}
                     initial="hidden"
@@ -225,7 +180,6 @@ const MenuShowcase = () => {
               variants={containerVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              // --- 수정된 부분: 반응형 정렬 클래스를 더 세분화합니다. ---
               className="flex flex-wrap gap-8 justify-center sm:justify-start xl:justify-center"
             >
               {menuCategories[activeTab].items.map((item, index) => (
@@ -255,4 +209,8 @@ const MenuShowcase = () => {
   )
 }
 
-export default MenuShowcase
+const App = () => {
+    return <MenuShowcase />;
+}
+
+export default App;

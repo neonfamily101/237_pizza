@@ -1,287 +1,155 @@
-'use client'
+'use client';
 
-import { useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { MapPin, Phone, Clock, Search } from 'lucide-react'
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { Flame, ShieldCheck, Pizza, Star, Leaf } from 'lucide-react';
 
-const StoreLocations = () => {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedRegion, setSelectedRegion] = useState('전체')
+interface Feature {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
 
-  const regions = ['전체', '서울', '경기', '인천', '부산', '대구', '대전', '광주', '울산']
+const features: Feature[] = [
+  {
+    icon: <Flame className="w-8 h-8 text-red-500" />,
+    title: "국내 유일, 100% 글루텐 프리",
+    description: "237피자는 국내 최초이자 유일한 글루텐 프리 나폴리 화덕피자 전문점으로, 새로운 미식의 장을 엽니다.",
+  },
+  {
+    icon: <ShieldCheck className="w-8 h-8 text-red-500" />,
+    title: "완벽한 교차오염 방지",
+    description: "국내 최초 글루텐 프리 전용 화덕과 주방을 완비했습니다. 셀리악 환우도 안심하고 즐길 수 있는 환경을 보장합니다.",
+  },
+  {
+    icon: <Pizza className="w-8 h-8 text-red-500" />,
+    title: "기대 이상의 맛과 품질",
+    description: "글루텐이 없어도 더 맛있다는 평가! 22가지 정통 피자를 최고급 이탈리아산 재료로 구현해 맛의 편견을 깹니다.",
+  },
+  {
+    icon: <Star className="w-8 h-8 text-red-500" />,
+    title: "1년간 증명된 안전성",
+    description: "개업 후 1년간 단 한 건의 부작용 보고도 없었습니다. 주한이탈리아대사관 파티에서도 극찬받은 품질을 자랑합니다.",
+  },
+  {
+    icon: <Leaf className="w-8 h-8 text-red-500" />,
+    title: "건강을 생각하는 윤리적 가치",
+    description: "'해로운 것을 빼어 건강하고 맛있는 음식을 만들자'는 모토로 '가치 소비' 트렌드에 부합하는 정직한 음식을 만듭니다.",
+  },
+];
 
-  const stores = [
-    {
-      id: 1,
-      name: '237피자 강남점',
-      address: '서울특별시 강남구 테헤란로 123',
-      phone: '02-1234-5678',
-      hours: '11:00 - 23:00',
-      region: '서울',
-      isNew: true,
-      services: ['배달', '포장', '매장 취식']
-    },
-    {
-      id: 2,
-      name: '237피자 홍대점',
-      address: '서울특별시 마포구 홍익로 456',
-      phone: '02-2345-6789',
-      hours: '11:00 - 24:00',
-      region: '서울',
-      isNew: false,
-      services: ['배달', '포장', '심야 배달']
-    },
-    {
-      id: 3,
-      name: '237피자 분당점',
-      address: '경기도 성남시 분당구 정자로 789',
-      phone: '031-3456-7890',
-      hours: '11:00 - 23:00',
-      region: '경기',
-      isNew: false,
-      services: ['배달', '포장', '매장 취식', '주차 가능']
-    },
-    {
-      id: 4,
-      name: '237피자 부산서면점',
-      address: '부산광역시 부산진구 서면로 101',
-      phone: '051-4567-8901',
-      hours: '11:00 - 23:30',
-      region: '부산',
-      isNew: true,
-      services: ['배달', '포장', '매장 취식']
-    },
-    {
-      id: 5,
-      name: '237피자 대전둔산점',
-      address: '대전광역시 서구 둔산로 202',
-      phone: '042-5678-9012',
-      hours: '11:00 - 23:00',
-      region: '대전',
-      isNew: false,
-      services: ['배달', '포장', '드라이브스루']
-    },
-    {
-      id: 6,
-      name: '237피자 인천논현점',
-      address: '인천광역시 남동구 논현로 303',
-      phone: '032-6789-0123',
-      hours: '11:00 - 23:00',
-      region: '인천',
-      isNew: false,
-      services: ['배달', '포장', '매장 취식']
-    }
-  ]
+const RotatingPizza = () => (
+  <motion.div
+    className="w-64 h-64 md:w-96 md:h-96 relative"
+    animate={{ rotate: 360 }}
+    transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
+  >
+    <div className="absolute inset-0 rounded-full bg-yellow-400 border-8 border-yellow-600"></div>
+    <div className="absolute w-16 h-8 bg-red-500 rounded-full top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></div>
+    <div className="absolute w-12 h-12 bg-green-600 rounded-full top-1/3 right-1/4 transform -translate-x-1/2 -translate-y-1/2 -rotate-30"></div>
+    <div className="absolute w-10 h-10 bg-red-600 rounded-full bottom-1/4 left-1/3 transform -translate-x-1/2 -translate-y-1/2 rotate-15"></div>
+    <div className="absolute w-14 h-14 bg-green-500 rounded-full bottom-1/3 right-1/3 transform -translate-x-1/2 -translate-y-1/2 rotate-60"></div>
+    <div className="absolute w-8 h-8 bg-red-500 rounded-full top-1/2 right-1/4 transform -translate-x-1/2 -translate-y-1/2 -rotate-45"></div>
+  </motion.div>
+);
 
-  const filteredStores = stores.filter(store => {
-    const matchesSearch = store.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         store.address.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesRegion = selectedRegion === '전체' || store.region === selectedRegion
-    return matchesSearch && matchesRegion
-  })
+const FeatureSection = ({ feature, index }: { feature: Feature, index: number }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.3,
+  });
+
+  const isReversed = index % 2 !== 0;
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
+        staggerChildren: 0.2,
+      },
+    },
+  };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6
-      }
-    }
-  }
+    hidden: { opacity: 0, x: isReversed ? 100 : -100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+  };
+  
+  const pizzaVariants = {
+    hidden: { opacity: 0, scale: 0.5 },
+    // FIX: 유효하지 않은 cubic-bezier 값을 'easeOut'으로 변경하여 오류를 해결했습니다.
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } },
+  };
 
   return (
-    <section ref={ref} className="py-20 bg-white">
-      <div className="container mx-auto px-4">
+    <motion.section
+      ref={ref}
+      variants={containerVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      className={`flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24 py-20 ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+    >
+      <motion.div variants={pizzaVariants}>
+        <RotatingPizza />
+      </motion.div>
+      <motion.div variants={itemVariants} className="lg:w-1/3 text-center lg:text-left">
+        <div className="inline-flex items-center gap-4 mb-4">
+          {feature.icon}
+          <h3 className="text-3xl md:text-4xl font-bold text-gray-800">{feature.title}</h3>
+        </div>
+        <p className="text-lg md:text-xl text-gray-600 leading-relaxed">{feature.description}</p>
+      </motion.div>
+    </motion.section>
+  );
+};
+
+const App = () => {
+  return (
+    <div className="min-h-screen bg-white font-sans antialiased overflow-x-hidden">
+      <div className="container mx-auto px-4 py-24 sm:py-32">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: -50, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="text-center mb-20"
         >
-          {/* --- 수정된 부분: text-dark-red -> text-red-800, text-medium-gray -> text-gray-600 --- */}
-          <h2 className="text-4xl md:text-5xl font-bold text-red-800 font-gmarket mb-4">
-            STORE LOCATIONS
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            가까운 237Pizza피자 매장을 찾아보세요
+          <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900">
+            <span className="text-red-600">237피자</span>, 맛의 새로운 기준
+          </h1>
+          <p className="mt-6 text-xl text-gray-700 max-w-3xl mx-auto">
+            건강과 맛, 어느 하나도 놓치지 않는 당신을 위한 단 하나의 피자.
           </p>
         </motion.div>
 
-        {/* Search and Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-12"
-        >
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-            {/* Search Input */}
-            <div className="relative">
-              {/* --- 수정된 부분: text-medium-gray -> text-gray-400 --- */}
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              {/* --- 수정된 부분: border-light-gray -> border-gray-300, focus:border-primary -> focus:border-red-600 --- */}
-              <input
-                type="text"
-                placeholder="매장명 또는 주소로 검색"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-red-600 transition-colors duration-300 w-80 text-gray-800"
-              />
-            </div>
-
-            {/* Region Filter */}
-            <div className="flex flex-wrap gap-2 justify-center">
-              {regions.map((region) => (
-                <button
-                  key={region}
-                  onClick={() => setSelectedRegion(region)}
-                  // --- 수정된 부분: 사용자 정의 색상을 표준 색상으로 변경 ---
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                    selectedRegion === region
-                      ? 'bg-red-700 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-700 hover:bg-red-600 hover:text-white'
-                  }`}
-                >
-                  {region}
-                </button>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Store Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
-        >
-          {filteredStores.map((store) => (
-            <motion.div
-              key={store.id}
-              variants={itemVariants}
-              // --- 수정된 부분: border-light-gray -> border-gray-200 ---
-              className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 group"
-            >
-              <div className="flex items-start justify-between mb-4">
-                {/* --- 수정된 부분: text-dark-red -> text-red-800 --- */}
-                <h3 className="text-xl font-bold text-red-800 font-gmarket">
-                  {store.name}
-                </h3>
-                {/* --- 수정된 부분: bg-primary -> bg-red-700 --- */}
-                {store.isNew && (
-                  <span className="bg-red-700 text-white px-2 py-1 rounded-full text-xs font-medium">
-                    NEW
-                  </span>
-                )}
-              </div>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-start">
-                   {/* --- 수정된 부분: text-primary -> text-red-700, text-medium-gray -> text-gray-600 --- */}
-                  <MapPin className="w-4 h-4 text-red-700 mt-1 mr-3 flex-shrink-0" />
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {store.address}
-                  </p>
-                </div>
-
-                <div className="flex items-center">
-                  <Phone className="w-4 h-4 text-red-700 mr-3" />
-                  <span className="text-gray-600 text-sm">
-                    {store.phone}
-                  </span>
-                </div>
-
-                <div className="flex items-center">
-                  <Clock className="w-4 h-4 text-red-700 mr-3" />
-                  <span className="text-gray-600 text-sm">
-                    {store.hours}
-                  </span>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <div className="flex flex-wrap gap-2">
-                  {store.services.map((service, serviceIndex) => (
-                     // --- 수정된 부분: bg-cream -> bg-red-100, text-primary -> text-red-800 ---
-                    <span
-                      key={serviceIndex}
-                      className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium"
-                    >
-                      {service}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                {/* --- 수정된 부분: bg-primary -> bg-red-700, hover:bg-dark-red -> hover:bg-red-800 --- */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex-1 bg-red-700 text-white py-2 rounded-lg font-medium hover:bg-red-800 transition-colors duration-300 text-sm"
-                >
-                  전화주문
-                </motion.button>
-                {/* --- 수정된 부분: border-primary -> border-red-700, text-primary -> text-red-700, hover:bg-primary -> hover:bg-red-700 --- */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex-1 border border-red-700 text-red-700 py-2 rounded-lg font-medium hover:bg-red-700 hover:text-white transition-colors duration-300 text-sm"
-                >
-                  길찾기
-                </motion.button>
-              </div>
-            </motion.div>
+        <div>
+          {features.map((feature, index) => (
+            <FeatureSection key={index} feature={feature} index={index} />
           ))}
-        </motion.div>
+        </div>
 
-        {filteredStores.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            {/* --- 수정된 부분: text-medium-gray -> text-gray-600 --- */}
-            <p className="text-gray-600 text-lg">
-              검색 조건에 맞는 매장이 없습니다.
-            </p>
-          </motion.div>
-        )}
-
-        {/* Call to Action */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="text-center mt-24"
         >
-           {/* --- 수정된 부분: bg-primary -> bg-red-700, hover:bg-dark-red -> hover:bg-red-800 --- */}
-          <motion.button
+          <h2 className="text-4xl font-bold text-gray-800">이제, 모두가 함께 즐기는 피자</h2>
+          <p className="mt-4 text-lg text-gray-600">
+            237피자는 단순한 식사를 넘어, 모두가 안심하고 즐기는 행복한 경험을 선물합니다.
+          </p>
+          <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-red-800 transition-colors duration-300 shadow-lg"
+            className="mt-10 px-10 py-4 bg-red-600 text-white font-bold text-xl rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-red-300"
           >
-            가맹점 개설 문의
+            메뉴 보러가기
           </motion.button>
         </motion.div>
       </div>
-    </section>
-  )
-}
+    </div>
+  );
+};
 
-export default StoreLocations
+export default App;
