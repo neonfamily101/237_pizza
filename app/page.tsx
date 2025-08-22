@@ -17,10 +17,10 @@ export default function Home() {
       <Good_point/>
       <MakingProcess />
       <News />
-      <CoreValues />
-      <Market/>
-      <ArchScroller/>
       <Menu/>
+      <CoreValues />
+      <ArchScroller/>
+      <Market/>
       <Testimonials />
     </main>
   )

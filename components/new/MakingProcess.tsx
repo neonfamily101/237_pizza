@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
-import { motion, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useSpring, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { Wheat, CookingPot } from 'lucide-react';
 
 
@@ -30,6 +30,7 @@ const TextItem = React.forwardRef<
   HTMLDivElement,
   { index: number; activeIndex: number }
 >(({ index, activeIndex }, ref) => {
+  const [expanded, setExpanded] = useState(false);
   const isActive = activeIndex === index;
   return (
     <motion.div
@@ -45,7 +46,15 @@ const TextItem = React.forwardRef<
         </div>
         <h3 className="text-4xl font-extrabold text-white">{steps[index].title}</h3>
       </div>
-      <p className="text-white/70 text-lg leading-relaxed">{steps[index].description}</p>
+      <p className={`text-white/70 text-lg leading-relaxed ${expanded ? '' : 'line-clamp-2'}`}>{steps[index].description}</p>
+      <button
+        onClick={() => setExpanded((v) => !v)}
+        className="mt-2 inline-flex items-center gap-1 text-sm text-gray-200 underline/50 hover:underline"
+        aria-expanded={expanded}
+        aria-controls={`desc-${index}`}
+      >
+        {expanded ? '접기' : '더보기'}
+      </button>
     </motion.div>
   );
 });
@@ -144,108 +153,54 @@ const MakingProcess = () => {
         ref={gridRef}
         className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start"
       >
-        <div
-          ref={leftColRef}
-          className="relative hidden lg:block"
-          style={{ height: leftHeight ? `${leftHeight}px` : undefined }}
-        >
-          <motion.div
-            className="absolute left-0 right-0 mx-auto w-full max-w-[560px]"
-            style={{ y: ySpring, height: imageBoxHeight }}
-          >
-            <ImageContent activeIndex={activeIndex} />
-          </motion.div>
-        </div>
-
-        <div ref={textColRef} className="hidden lg:flex flex-col">
-          {steps.map((_, index) => (
-            <TextItem
-              key={index}
-              index={index}
-              activeIndex={activeIndex}
-              ref={(el) => {
-                itemRefs.current[index] = el;
-                if (el) (el as HTMLElement).dataset.index = String(index);
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="lg:hidden pb-24">
-          <MobileSlider />
-        </div>
+         <div
+           ref={leftColRef}
+           className="relative hidden lg:block"
+           style={{ height: leftHeight ? `${leftHeight}px` : undefined }}
+         >
+           <motion.div
+             className="absolute left-0 right-0 mx-auto w-full max-w-[560px]"
+             style={{ y: ySpring, height: imageBoxHeight }}
+           >
+             <ImageContent activeIndex={activeIndex} />
+           </motion.div>
+         </div>
+ 
+        <LayoutGroup id="making-process-mobile">
+          <div ref={textColRef} className="flex flex-col">
+            {steps.map((_, index) => (
+              <React.Fragment key={index}>
+                <div className="lg:hidden mb-4">
+                  <AnimatePresence initial={false} mode="popLayout">
+                    {activeIndex === index && (
+                      <motion.div
+                        layoutId="mobile-image-box"
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.80, ease: 'easeOut' }}
+                        className="w-full h-[300px] rounded-2xl overflow-hidden shadow-2xl"
+                      >
+                        <ImageContent activeIndex={activeIndex} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+                <TextItem
+                  index={index}
+                  activeIndex={activeIndex}
+                  ref={(el) => {
+                    itemRefs.current[index] = el;
+                    if (el) (el as HTMLElement).dataset.index = String(index);
+                  }}
+                />
+              </React.Fragment>
+            ))}
+          </div>
+        </LayoutGroup>
+ 
       </div>
     </section>
   );
 };
-
-const MobileSlider = () => {
-  const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const total = steps.length;
-  const prev = () => { setDirection(-1); setIndex((i) => (i - 1 + total) % total); };
-  const next = () => { setDirection(1); setIndex((i) => (i + 1) % total); };
-  const step = steps[index];
-  const slideVariants = {
-    enter: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0 })
-  };
-  return (
-    <div className="space-y-4">
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.div
-          key={index}
-          custom={direction}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-        >
-          <div className="w-full h-[300px] rounded-2xl overflow-hidden shadow-2xl">
-            <div
-              className="w-full h-full bg-contain bg-no-repeat bg-center"
-              style={{ backgroundImage: `url(${step.imageUrl})` }}
-            />
-          </div>
-          <div className="text-left mt-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center">
-                {step.icon}
-              </div>
-              <h4 className="text-2xl font-extrabold">{step.title}</h4>
-            </div>
-            <p className="text-white/70">{step.description}</p>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-      <div className="flex items-center justify-between pt-2">
-        <button
-          onClick={prev}
-          className="w-12 h-12 rounded-full bg-white/10 text-white text-2xl flex items-center justify-center active:scale-95"
-          aria-label="Previous"
-        >
-          ‹
-        </button>
-        <div className="flex gap-1">
-          {Array.from({ length: total }).map((_, i) => (
-            <span
-              key={i}
-              className={`w-2.5 h-2.5 rounded-full ${i === index ? 'bg-white' : 'bg-white/30'}`}
-            />
-          ))}
-        </div>
-        <button
-          onClick={next}
-          className="w-12 h-12 rounded-full bg-white/10 text-white text-2xl flex items-center justify-center active:scale-95"
-          aria-label="Next"
-        >
-          ›
-        </button>
-      </div>
-    </div>
-  );
-};
-
 export default MakingProcess;
