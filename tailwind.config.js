@@ -16,7 +16,12 @@ module.exports = {
         neutral: {
           'light-gray': '#f7f7f7',
           'medium-gray': '#bababa',
-        }
+        },
+        'brand-bg': '#FBEFDD',
+        'brand-text': '#8B4513',
+        'brand-problem': '#E53E3E',
+        'brand-solution': '#38A169',
+        'brand-neutral': '#A0AEC0',
       },
       fontFamily: {
         'noto': ['Noto Sans KR', 'sans-serif'],
@@ -69,5 +74,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 } 

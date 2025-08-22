@@ -1,6 +1,8 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_KR } from 'next/font/google'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
@@ -9,17 +11,17 @@ const notoSansKR = Noto_Sans_KR({
 })
 
 export const metadata: Metadata = {
-  title: '237 Pizza - 엣지는 없다, 토핑만 있다',
-  description: '237피자(237 Pizza)의 공식 웹사이트입니다. 신선한 재료로 만든 맛있는 피자를 만나보세요.',
+  title: '237 Pizza - The Art of Pizza',
+  description: 'Welcome to the official website of 237 Pizza. Discover the authentic taste of Naples with our 100% gluten-free pizzas.',
   openGraph: {
     title: '237 Pizza',
-    description: '언제나 맛있는 237피자',
+    description: 'The Art of Pizza',
     images: '/og-image.jpg',
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#e12800',
+  themeColor: '#9A3434',
 }
 
 export default function RootLayout({
@@ -28,12 +30,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ko" className={notoSansKR.variable}>
+    <html lang="en" className={notoSansKR.variable}>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={`${notoSansKR.className} antialiased`}>
+      <body className={`${notoSansKR.className} antialiased bg-[#FBEFDD]`}>
+        {/* <Header /> */}
         {children}
+        <Footer />
       </body>
     </html>
   )

@@ -418,23 +418,15 @@ button.swiper-pagination-bullet {
   display: none;
 }
 
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./node_modules/swiper/modules/effect-fade.css ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************/
-.swiper-fade.swiper-free-mode .swiper-slide {
-  transition-timing-function: ease-out;
+/*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./node_modules/swiper/modules/effect-cards.css ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************/
+.swiper.swiper-cards {
+  overflow: visible;
 }
-.swiper-fade .swiper-slide {
-  pointer-events: none;
-  transition-property: opacity;
-}
-.swiper-fade .swiper-slide .swiper-slide {
-  pointer-events: none;
-}
-.swiper-fade .swiper-slide-active {
-  pointer-events: auto;
-}
-.swiper-fade .swiper-slide-active .swiper-slide-active {
-  pointer-events: auto;
+.swiper-cards .swiper-slide {
+  transform-origin: center bottom;
+  backface-visibility: hidden;
+  overflow: hidden;
 }
 

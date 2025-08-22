@@ -1,29 +1,27 @@
 'use client'
 
-import Header from '@/components/Header'
 import Hero from '@/components/Hero'
-import SelfBaking from '@/components/SelfBaking'
-import MenuShowcase from '@/components/MenuShowcase'
-import NewStores from '@/components/NewStores'
+import Good_point from '@/components/Good_point'
 import News from '@/components/News'
-import StoreLocations from '@/components/StoreLocations'
-import VideoSection from '@/components/videoSection'
-import Gluten from '@/components/Glueten'
-import MarketOpportunity from '@/components/Footer'
-import Menu from '@/components/menu'
+import Menu from '@/components/new/Menu'
+import ArchScroller from '@/components/new/ArchScrollAnimator'
+import Market from '@/components/new/Market'
+import MakingProcess from '@/components/new/MakingProcess'
+import CoreValues from '@/components/new/CoreValues'
+import Testimonials from '@/components/new/Testimonials'
+
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      {/* <Header /> */}
+    <main className="min-h-screen bg-[#FBEFDD]">
       <Hero />
-      <SelfBaking />
-      {/* <MenuShowcase /> */}
-      {/* <Gluten /> */}
-      {/* <NewStores /> */}
+      <Good_point/>
+      <MakingProcess />
       <News />
+      <CoreValues />
+      <Market/>
+      <ArchScroller/>
       <Menu/>
-      <StoreLocations />
-      <MarketOpportunity />
+      <Testimonials />
     </main>
   )
 } 
