@@ -55,8 +55,8 @@ export default function IrregularImageGallery() {
       {/* subtle top gradient + padding frame */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-8">
         <header className="sticky text-center top-0 z-20 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8 pt-4 pb-6 backdrop-blur supports-[backdrop-filter]:bg-[#F8F4E9]/70">
-          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-stone-800">
-            Market Moments
+          <h1 className="text-5xl md:text-7xl font-extrabold text-[#9A3434]">
+            Market
           </h1>
           <p className="text-stone-500 text-sm md:text-base mt-1">A hand-placed, irregular mosaic</p>
         </header>

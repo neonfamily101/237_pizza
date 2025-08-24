@@ -1,1 +1,1 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/ijunseo/Documents/237_pizza_git/237_pizza/app/layout\":[\"static/media/45cca0c1391027f2-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
+self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/ijunseo/Documents/github/237 Pizza/237_pizza/app/layout\":[\"static/media/45cca0c1391027f2-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"

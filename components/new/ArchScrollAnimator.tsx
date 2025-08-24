@@ -115,8 +115,8 @@ const ArchScrollAnimator = () => {
 
   // --- [수정] 텍스트 애니메이션을 원래의 아치 형태로 되돌립니다. ---
   const getLetterStyle = (index: number) => {
-    const startAngle = -25;
-    const endAngle = 205;
+    const startAngle = -60;
+    const endAngle = 210;
     const totalAngle = endAngle - startAngle;
 
     const baseAngle = startAngle + scrollPercentage * totalAngle;
@@ -126,7 +126,7 @@ const ArchScrollAnimator = () => {
 
     const radiusX = 45;
     const centerX = 50;
-    const centerY = 42;
+    const centerY = 30;
 
     let x, y, rotation;
 
@@ -189,23 +189,7 @@ const ArchScrollAnimator = () => {
                 backgroundPosition: 'center',
               }}
             >
-               <div className="relative w-full h-full flex flex-col items-center justify-end p-4 md:p-8">
-                 <div className="relative z-20 mb-4">
-                   <div className="w-32 h-20 md:w-40 md:h-24 bg-[#F9EFE4] border-2 border-red-600 rounded-lg flex items-center justify-center">
-                      <BoxPattern />
-                   </div>
-                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-36 md:w-44 h-6 bg-[#F9EFE4] border-2 border-red-600 rounded-lg flex justify-center items-center">
-                      <div className="w-8 h-2 bg-red-600 rounded-full"></div>
-                   </div>
-                   <div className="absolute top-0 -right-2 w-2 h-full bg-[#F2DDC9] border-y-2 border-r-2 border-red-600 rounded-r-lg"></div>
-                   <div className="absolute -top-3 -right-2 w-2 h-6 bg-[#F2DDC9] border-y-2 border-r-2 border-red-600 rounded-r-lg"></div>
-                   <div className="absolute text-xs -left-12 top-1/2 -translate-y-1/2 rotate-[-10deg] opacity-70">
-                      <p className="font-extrabold text-lg">LE POPS</p>
-                      <p className="text-sm">VALUE</p>
-                   </div>
-                 </div>
-               </div>
-
+               
                <div className="absolute top-1/2 left-0 w-full h-2 -translate-y-1/2 bg-[#F9EFE4] z-10"></div>
                <div className="absolute left-1/2 top-0 h-full w-2 -translate-x-1/2 bg-[#F9EFE4] z-10"></div>
             </div>

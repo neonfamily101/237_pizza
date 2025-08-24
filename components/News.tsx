@@ -7,22 +7,22 @@ import { AlertTriangle, ShieldCheck, Heart, XCircle } from 'lucide-react';
 
 const analysisData = [
   {
-    icon: <AlertTriangle className="w-10 h-10 text-red-500" />,
+    // icon: <AlertTriangle className="w-10 h-10 text-red-500" />,
     title: '글루텐의 잠재적 위험',
     description: '이는 셀리악병이나 글루텐 민감증 등 다양한 면역 반응을 일으켜 신체에 부담을 줄 수 있습니다.',
   },
   {
-    icon: <XCircle className="w-10 h-10 text-red-500" />,
+    // icon: <XCircle className="w-10 h-10 text-red-500" />,
     title: '소화불량 단백질',
     description: '장내 환경에 해를 끼치고 염증 반응을 일으켜 누수 장 증후군의 직접적인 원인이 됩니다.',
   },
   {
-    icon: <ShieldCheck className="w-10 h-10 text-green-500" />,
+    // icon: <ShieldCheck className="w-10 h-10 text-green-500" />,
     title: '과학적 검증',
     description: 'WHO/FAO는 글루텐 함량을 20ppm 이하로 엄격히 규제하고 있어 공중보건 관리가 필요하다는 것을 시사합니다.',
   },
   {
-    icon: <Heart className="w-10 h-10 text-pink-500" />,
+    // icon: <Heart className="w-10 h-10 text-pink-500" />,
     title: '모두를 위한 새로운 기준',
     description: '글루텐 프리 식단은 질병을 예방하고 삶의 질을 향상시키는 데 중요한 선택입니다. 237 Pizza가 그 기준을 제시합니다.',
   },
@@ -81,7 +81,7 @@ const News = () => {
               variants={cardVariants}
               className="p-8 rounded-2xl bg-white shadow-lg text-left h-full flex flex-col items-center text-center"
             >
-              <div className="mb-6">{item.icon}</div>
+              {/* <div className="mb-6">{item.icon}</div> */}
               <h3 className="text-2xl font-bold text-[#9A3434] mb-3">{item.title}</h3>
               <p className="text-gray-600 leading-relaxed flex-grow">{item.description}</p>
             </motion.div>

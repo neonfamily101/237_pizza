@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+
 // Swiper 라이브러리 임포트 경로를 표준 방식으로 수정합니다.
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, EffectCards } from 'swiper/modules';
@@ -14,32 +15,54 @@ import 'swiper/css/effect-cards';
 
 const testimonials = [
   {
-    name: "Jane Doe",
-    role: "Food Blogger",
-    quote: "The best gluten-free pizza I've ever had! The crust was perfectly crispy and chewy. It's a game-changer for people with Celiac disease.",
+    name: "김**3277",
+    role: "Naver Review",
+    quote: "글루텐프리 피자여서 다이어트 중이신 분들도 안심하고 먹을 수 있어요! 속도 편하고요!! 그리고 무엇보다 쫄깃하고 짱맛있습니당👍🏻 사장님께서도 친절하셔서 좋아요!!",
     rating: 5,
   },
   {
-    name: "John Smith",
-    role: "Pizza Lover",
-    quote: "I'couldn't believe it was gluten-free. The flavors were incredible, and I didn't feel bloated afterward. I'm a customer for life!",
+    name: "이뱅*",
+    role: "Naver Review",
+    quote: "이태리에서 공수한 재료로 피자를 만드는 곳. 정말 담백하고 도우가 쫄깃합니다. 일반 피자와 다르게 기교없이 맛으로 승부하는 곳이예요. 사장님도 너무 친절하시고 다시 방문하고 싶은 한남동 피자맛집입니다.",
     rating: 5,
   },
   {
     name: "Emily White",
-    role: "Local Resident",
+    role: "Google Review",
     quote: "A beautiful place with an even more beautiful mission. The pizza is just divine. Highly recommend the truffle quattro formaggi!",
     rating: 5,
   },
   {
     name: "Michael Brown",
-    role: "Tourist",
+    role: "Google Review",
     quote: "Found this gem on our trip to Seoul. The staff was incredibly friendly and the pizza was out of this world. A must-visit!",
     rating: 5,
   },
 ];
 
 const Testimonials = () => {
+  const swiperRef = useRef<any>(null);
+  const timerRef = useRef<any>(null);
+
+  useEffect(() => {
+    const tick = () => {
+      const swiper = swiperRef.current;
+      if (swiper && !swiper.destroyed) {
+        // 마지막이면 처음으로 점프하여 무한 재생처럼 보이게 처리
+        if (swiper.activeIndex >= swiper.slides.length - 1) {
+          swiper.slideTo(0, 0);
+        } else {
+          swiper.slideNext();
+        }
+      }
+      timerRef.current = setTimeout(tick, 1000);
+    };
+    timerRef.current = setTimeout(tick, 1000);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
   return (
     <section className="bg-[#FBEFDD] py-24">
       <div className="container mx-auto px-6">
@@ -48,13 +71,13 @@ const Testimonials = () => {
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1.0 }}
         >
           <h2 className="text-5xl md:text-7xl font-extrabold text-[#9A3434]">
             What Our Customers Say
           </h2>
           <p className="text-[#9A3434]/80 mt-4 max-w-3xl mx-auto text-lg">
-            Don't just take our word for it. Here's what people are saying about their 237 Pizza experience.
+            실제 237 PIZZA를 방문한 고객님들의 생생한 후기입니다.
           </p>
         </motion.div>
 
@@ -63,9 +86,19 @@ const Testimonials = () => {
           grabCursor={true}
           modules={[EffectCards, Pagination, Autoplay]}
           pagination={{ clickable: true }}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          loop={true}
+          // autoplay는 일부 환경에서 cards 효과와 충돌할 수 있어 수동 타이머로 제어합니다.
+          // autoplay={{ delay: 1000, disableOnInteraction: false }}
+          loop={false}
+          rewind={true}
+          allowTouchMove={false}
           className="w-full max-w-lg"
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+            // 안전하게 시작
+            if (swiper.autoplay && typeof swiper.autoplay.start === 'function') {
+              swiper.autoplay.start();
+            }
+          }}
         >
           {testimonials.map((testimonial, index) => (
             <SwiperSlide key={index} className="bg-white p-8 rounded-2xl shadow-xl">
@@ -147,12 +180,11 @@ const MapSection = () => {
   );
 };
 
-
 export default function LocationPage() {
-    return (
-        <main>
-            <Testimonials />
-            <MapSection />
-        </main>
-    )
+  return (
+    <main>
+      <Testimonials />
+      <MapSection />
+    </main>
+  )
 }
