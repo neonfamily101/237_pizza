@@ -19,7 +19,7 @@ export default function Home() {
       <News />
       <Menu/>
       <CoreValues />
-      <ArchScroller/>
+      {/* <ArchScroller/> */}
       <Market/>
       <Testimonials />
     </main>

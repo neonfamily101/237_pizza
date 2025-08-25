@@ -185,7 +185,7 @@ const ArchScrollAnimator = () => {
             <div
               className="relative w-[75%] h-[85%] rounded-2xl shadow-2xl overflow-hidden border-8 border-[#F9EFE4]"
               style={{
-                backgroundImage: `url('https://images.unsplash.com/photo-1580915411954-282cb1b0d780?q=80&w=1964&auto=format&fit=crop')`,
+                backgroundImage: `url('/images/three_image/pizza_girl2.png')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}

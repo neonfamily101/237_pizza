@@ -12,7 +12,7 @@ const values = [
   {
     title: "Quality",
     description: "From our specially milled flour to the freshest toppings, we never compromise on quality. Every ingredient is chosen to create the ultimate pizza experience.",
-    imageUrl: "/images/hero/truffle.jpg",
+    imageUrl: "/images/three_image/pizza_girl1.png",
   },
   {
     title: "Inclusivity",

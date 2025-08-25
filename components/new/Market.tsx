@@ -38,6 +38,63 @@ const containerVariants = {
 };
 
 export default function IrregularImageGallery() {
+  // —— Flying pizza svg (from ArchScrollAnimator)
+  const PizzaSlice = ({ style, className }: { style?: React.CSSProperties; className?: string }) => (
+    <svg
+      viewBox="0 0 100 100"
+      className={className}
+      style={style}
+      xmlns="/images/pizza/pizza_icon_131067.svg"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M 10 10 L 90 50 L 10 90 Z" />
+      <path d="M 10 10 C 40 40, 40 60, 10 90" />
+      <circle cx="40" cy="45" r="8" />
+      <circle cx="60" cy="60" r="6" />
+      <circle cx="30" cy="70" r="5" />
+    </svg>
+  );
+
+  const FlyingPizzas = React.useMemo(() => {
+    const pizzaCount = 150;
+    const pizzas = Array.from({ length: pizzaCount }).map((_, i) => {
+      const size = Math.random() * 80 + 20;
+      const duration = Math.random() * 8 + 8;
+      const delay = Math.random() * -16;
+      const startX = Math.random() * 150 - 25;
+      // Spread vertically across the entire container height, not just the viewport
+      const startYPercent = Math.random() * 150 - 25; // -25% ~ 125%
+      const rotation = Math.random() * 360;
+      const customStyle = {
+        '--start-x': `${startX}vw`,
+        '--start-y': `${startYPercent}%`,
+        '--end-x': `${Math.random() * 200 - 100}vw`,
+        '--end-y': `${Math.random() * 200 - 100}vh`,
+        '--rotation-end': `${Math.random() * 1440 - 720}deg`,
+        width: `${size}px`,
+        height: `${size}px`,
+        left: 'var(--start-x)',
+        top: 'var(--start-y)',
+        transform: `rotate(${rotation}deg)`,
+        animationDuration: `${duration}s`,
+        animationDelay: `${delay}s`,
+      } as React.CSSProperties;
+      return { id: i, style: customStyle };
+    });
+
+    return (
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        {pizzas.map((pizza) => (
+          <PizzaSlice key={pizza.id} className="absolute animate-fly opacity-25 text-red-600" style={pizza.style} />
+        ))}
+      </div>
+    );
+  }, []);
+
   const images = [
     { src: "/images/market/gluten.png", alt: "237 Pizza의 신선한 Gluten" },
     { src: "/images/market/stairs.jpeg", alt: "Stairs" },
@@ -52,13 +109,29 @@ export default function IrregularImageGallery() {
     { src: "/images/market/oil.png", alt: "237 Pizza의 신선한 Oil" },
     { src: "/images/market/olive.png", alt: "237 Pizza의 신선한 Olive" },
     { src: "/images/market/tomato.png", alt: "237 Pizza의 신선한 Tomato" },
+    { src: "/images/three_image/pizza_girl.png", alt: "AI with 237 Pizza" },
+    { src: "/images/three_image/pizza_girl1.png", alt: "AI with 237 Pizza" },
+    { src: "/images/three_image/pizza_girl2.png", alt: "AI with 237 Pizza" },
+
   ];
 
   return (
-    <div className="w-screen min-h-screen bg-[#F8F4E9]">
+    <div className="w-screen min-h-screen bg-[#F8F4E9] relative overflow-hidden">
+      <style>{`
+@keyframes fly {
+  0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.3; }
+  100% { transform: translateX(var(--end-x)) translateY(var(--end-y)) rotate(var(--rotation-end)); opacity: 0; }
+}
+.animate-fly {
+  animation-name: fly;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+      `}</style>
+      {FlyingPizzas}
       {/* subtle top gradient + padding frame */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-8">
-        <header className="sticky text-center top-0 z-20 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8 pt-4 pb-6 backdrop-blur supports-[backdrop-filter]:bg-[#F8F4E9]/70">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-8">
+        <header className="sticky text-center top-0 z-20 -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8 pt-4 pb-6">
           <h1 className="text-5xl md:text-7xl font-extrabold text-[#9A3434]">
             Market
           </h1>
