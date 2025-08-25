@@ -117,12 +117,12 @@ export default function Hero() {
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[3] group pointer-events-auto"
         aria-label="아래로 스크롤"
       >
-        <div className="flex flex-col items-center gap-1">
-          <span className="text-2xl font-extrabold text-center tracking-[0.2em] text-white/90 px-3 py-1 rounded-full">
+        <div className="flex flex-col items-center gap-1 animate-bounce duration-1000">
+          <span className="text-2xl font-extrabold text-center tracking-[0.2em] text-white/90 px-3 py-1 rounded-full ">
             SCROLL
           </span>
           <svg
-            className="w-10 h-10 text-white animate-bounce"
+            className="w-7 h-7 text-white"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
