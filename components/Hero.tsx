@@ -102,6 +102,38 @@ export default function Hero() {
           />
         </div>
       </motion.div>
+
+      {/* Scroll hint */}
+      <motion.button
+        type="button"
+        onClick={() => {
+          if (typeof window !== 'undefined') {
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+          }
+        }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.8 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[3] group pointer-events-auto"
+        aria-label="아래로 스크롤"
+      >
+        <div className="flex flex-col items-center gap-1">
+          <span className="text-2xl font-extrabold text-center tracking-[0.2em] text-white/90 px-3 py-1 rounded-full">
+            SCROLL
+          </span>
+          <svg
+            className="w-10 h-10 text-white animate-bounce"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </div>
+      </motion.button>
     </section>
   )
 }

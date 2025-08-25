@@ -1,7 +1,6 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
 import { Noto_Sans_KR } from 'next/font/google'
-import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 const notoSansKR = Noto_Sans_KR({
@@ -30,12 +29,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={notoSansKR.variable}>
+    <html lang="KR-ko" className={notoSansKR.variable}>
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`antialiased bg-[#FBEFDD]`}>
-        {/* <Header /> */}
         {children}
         <Footer />
       </body>
