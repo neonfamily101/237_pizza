@@ -39,15 +39,19 @@ const containerVariants = {
 
 export default function IrregularImageGallery() {
   const images = [
-    { src: "/images/market/ingredient.jpg", alt: "237피자만의 신선한 재료" },
+    { src: "/images/market/gluten.png", alt: "237 Pizza의 신선한 Gluten" },
     { src: "/images/market/stairs.jpeg", alt: "Stairs" },
     { src: "/images/market/hell.jpg", alt: "Hell" },
     { src: "/images/market/animation_image.png", alt: "Animation 0" },
-    { src: "/images/market/inside.jpeg", alt: "Inside 0" },
+    { src: "/images/market/inside.jpeg", alt: "매장 내부" },
     { src: "/images/market/inside1.jpeg", alt: "Inside 1" },
     { src: "/images/market/inside2.jpeg", alt: "Inside 2" },
     { src: "/images/market/make.jpeg", alt: "Make" },
-    { src: "/images/market/animation_image1.png", alt: "Animation" },
+    { src: "/images/market/animation_image1.png", alt: "237피자를 만드는 사장님" },
+    { src: "/images/market/cheese.png", alt: "237 Pizza의 신선한 Cheese" },
+    { src: "/images/market/oil.png", alt: "237 Pizza의 신선한 Oil" },
+    { src: "/images/market/olive.png", alt: "237 Pizza의 신선한 Olive" },
+    { src: "/images/market/tomato.png", alt: "237 Pizza의 신선한 Tomato" },
   ];
 
   return (
@@ -63,11 +67,11 @@ export default function IrregularImageGallery() {
 
         {/* Masonry via CSS columns */}
         <motion.div
-          className="columns-2 md:columns-3 lg:columns-4 gap-5 [column-fill:_balance]"
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-        >
+  className="columns-1 md:columns-2 lg:columns-3 gap-5 [column-fill:_balance]"
+  variants={containerVariants}
+  initial="hidden"
+  animate="show"
+>
           {images.map((img, i) => (
             <GalleryItem key={i} index={i} {...img} />
           ))}
@@ -150,7 +154,7 @@ function GalleryItem({ src, alt, index }: { src: string; alt: string; index: num
 
         {/* Polaroid-like caption appears only when framed */}
         {styles.frameStyle === "frame-polaroid" && (
-          <figcaption className="mt-2 text-[11px] leading-5 text-stone-500/90 tracking-wide">
+          <figcaption className="mt-2 text-[14px] leading-5 text-stone-500/90 tracking-wide font-bold">
             {alt}
           </figcaption>
         )}

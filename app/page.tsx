@@ -7,7 +7,7 @@ import Menu from '@/components/new/Menu'
 import ArchScroller from '@/components/new/ArchScrollAnimator'
 import Market from '@/components/new/Market'
 import MakingProcess from '@/components/new/MakingProcess'
-import CoreValues from '@/components/new/CoreValues'
+import CoreValues from '@/components/new/three_image'
 import Testimonials from '@/components/new/Testimonials'
 
 export default function Home() {

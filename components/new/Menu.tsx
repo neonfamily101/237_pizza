@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, MouseEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { pizzaItems, saladItems, wineItems, type BasicMenuItem } from '../../data/menuItems';
+import menuData from '../../data/menuItems.json';
+import type { BasicMenuItem } from '@/data/menuItems';
 
 // Types and Interfaces
 // 분리된 데이터(`data/menuItems.ts`)를 사용하므로 이 파일에서 별도의 아이템 타입 정의/하드코딩은 하지 않습니다.
@@ -138,7 +139,7 @@ function MenuCard({
           <h3 className="text-red-700 font-bold text-sm lg:text-base tracking-wide uppercase">
             {name}
           </h3>
-          <p className="text-gray-600 text-xs lg:text-sm overflow-hidden line-clamp-3">
+          <p className="text-gray-600 text-xs lg:text-sm overflow-hidden line-clamp-3 font-semibold">
             {description}
           </p>
           <div className="flex items-end justify-between">
@@ -249,6 +250,9 @@ export default function FLAVORS() {
   const [showAll, setShowAll] = useState(false);
   const [initialCount, setInitialCount] = useState<number>(8);
 
+  const pizzaItems: BasicMenuItem[] = menuData.pizzaItems as BasicMenuItem[];
+  const saladItems: BasicMenuItem[] = menuData.saladItems as BasicMenuItem[];
+  const wineItems: BasicMenuItem[] = menuData.wineItems as BasicMenuItem[];
   const allItems: BasicMenuItem[] = [...pizzaItems, ...saladItems, ...wineItems];
 
   const getFilteredItems = (): BasicMenuItem[] => {
@@ -299,7 +303,7 @@ export default function FLAVORS() {
         </div>
 
         {/* Filters */}
-        <div className="flex items-center justify-center gap-3 mb-10">
+        <div className="flex items-center justify-center gap-3 mb-10 font-bold">
           {(['ALL', 'PIZZA', 'SALAD', 'WINE'] as const).map((cat) => (
             <button
               key={cat}
@@ -399,7 +403,7 @@ export default function FLAVORS() {
                       <span className="shrink-0 inline-flex items-center justify-center px-3 py-1 text-xs font-semibold text-red-700 border border-red-700 rounded-full">NEW</span>
                     )}
                   </div>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line font-semibold">
                     {selectedItem.description}
                   </p>
                   <div className="flex items-center justify-between pt-2">
@@ -411,9 +415,6 @@ export default function FLAVORS() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* All Flavors Button */}
-        {/* <AllFlavorsButton /> */}
       </div>
     </div>
   );

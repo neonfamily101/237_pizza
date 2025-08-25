@@ -46,7 +46,7 @@ const TextItem = React.forwardRef<
         </div>
         <h3 className="text-4xl font-extrabold text-white">{steps[index].title}</h3>
       </div>
-      <p className={`text-white/70 text-lg leading-relaxed ${expanded ? '' : 'line-clamp-2'}`}>{steps[index].description}</p>
+      <p className={`text-white/70 text-lg leading-relaxed font-bold ${expanded ? '' : 'line-clamp-2'}`}>{steps[index].description}</p>
       <button
         onClick={() => setExpanded((v) => !v)}
         className="mt-2 inline-flex items-center gap-1 text-sm text-gray-200 underline/50 hover:underline"

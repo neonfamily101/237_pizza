@@ -45,7 +45,7 @@ const ContentSection = ({
       <h1 className="text-5xl text-center md:text-left md:text-7xl font-extrabold text-[#9A3434] uppercase leading-none tracking-tight">
         {title}
       </h1>
-      <div className="mt-20 text-base md:text-lg text-[#9A3434]/80">{children}</div>
+      <div className="mt-20 text-base md:text-lg text-[#9A3434]/80 font-bold">{children}</div>
     </motion.div>
   );
 
@@ -89,7 +89,7 @@ const ContentSection = ({
       animate={inView ? "visible" : "hidden"}
       className="flex flex-col md:flex-row justify-center items-center w-full max-w-7xl mx-auto py-15 px-8"
     >
-      <div className={`w-full flex flex-col md:flex-row justify-between items-center ${textPosition === 'right' ? 'md:flex-row-reverse' : ''}`}>
+      <div className={`w-full flex flex-col md:flex-row justify-between items-center pb-20 ${textPosition === 'right' ? 'md:flex-row-reverse' : ''}`}>
         {textBlock}
         {imageBlock}
       </div>
@@ -110,7 +110,7 @@ const SelfBaking = () => {
   };
   return (
     <div className="bg-[#FBEFDD] pb-24">
-      <h1 className="text-center mt-20 mb-10 text-5xl md:text-7xl font-extrabold text-[#9A3434] uppercase leading-none tracking-tight">
+      <h1 className="text-center mt-20 mb-10 text-5xl md:text-7xl font-extrabold text-[#9A3434] uppercase leading-none tracking-tight pb-20">
         237 피자만의 차별점
       </h1>
 

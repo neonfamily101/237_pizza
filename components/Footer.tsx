@@ -23,8 +23,11 @@ const Footer = () => {
           <Link href="/" className="text-4xl font-extrabold text-[#9A3434] mb-6 inline-block">
             237 PIZZA
           </Link>
-          <p className='text-center text-gray-500 text-sm mb-4'>* 영업일 기준 영업시간 10:30 ~ 22:00</p>
-
+          <div className='flex justify-center space-x-6 mb-8'>
+            <p className='text-center text-gray-500 text-lg font-sm mb-4'>CEO 최영신(崔永信, Choi young shin)</p>
+            <p className='text-center text-gray-500 text-lg font-sm mb-4'>* 영업일 기준 영업시간 10:30 ~ 22:00</p>
+            <p className='text-center text-gray-500 text-lg font-sm mb-4'>전화: 02)797~2377, 010)2311~1958</p>
+          </div>
           <div className="flex justify-center space-x-6 mb-8">
             {socialLinks.map((link, index) => (
               <motion.a
