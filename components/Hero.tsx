@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 
 const Cloud = ({ className = '', delay = 0, scale = 1 }: { className?: string; delay?: number; scale?: number }) => (
   <motion.div
@@ -17,24 +18,36 @@ export default function Hero() {
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
+  const [showScrollHint, setShowScrollHint] = useState(true);
+
+  useEffect(() => {
+    const update = () => {
+      const threshold = window.innerHeight * 0.1; // 뷰포트의 10%
+      setShowScrollHint(window.scrollY < threshold);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
   return (
     <section
       className="relative w-full min-h-[90vh] md:min-h-screen overflow-hidden bg-[#FBEFDD] flex items-center bg-[url('/images/hero/dough.jpg')] bg-cover bg-center"
       style={{ backgroundAttachment: 'fixed' }}
     >
-      {/* dark scrim to improve readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-transparent z-[1]" />
-      {/* subtle vignette */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(120%_80%_at_0%_50%,transparent_0%,transparent_55%,rgba(0,0,0,0.5)_100%)] z-[1]" />
 
-      {/* Clouds */}
       <div className="absolute inset-0 pointer-events-none z-[0]">
         <Cloud className="left-[-20%] w-56" delay={0} scale={1} />
         <Cloud className="top-1/4 left-[-40%] w-80" delay={6} scale={1.3} />
         <Cloud className="top-2/3 left-[-30%] w-64" delay={12} scale={0.9} />
       </div>
 
-      {/* Content */}
       <motion.div
         className="container mx-auto px-6 relative z-[2] grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-20 md:py-28"
         style={{ y }}
@@ -71,8 +84,7 @@ export default function Hero() {
           >
             <div className="w-100 h-px bg-gradient-to-r from-amber-600/80 to-transparent" />
 
-            {/* readable text panel */}
-            <div className="mt-6 max-w-2xl rounded-xl  backdrop-blur-[2px] p-5 md:p-6">
+            <div className="mt-6 max-w-2xl rounded-xl backdrop-blur-[2px] p-5 md:p-6">
               <p
                 className="text-white/95 text-lg md:text-xl leading-relaxed font-semibold"
                 style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
@@ -103,37 +115,42 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Scroll hint */}
-      <motion.button
-        type="button"
-        onClick={() => {
-          if (typeof window !== 'undefined') {
-            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
-          }
-        }}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[3] group pointer-events-auto"
-        aria-label="아래로 스크롤"
-      >
-        <div className="flex flex-col items-center gap-1 animate-bounce duration-1000">
-          <span className="text-2xl font-extrabold text-center tracking-[0.2em] text-white/90 px-3 py-1 rounded-full ">
-            SCROLL
-          </span>
-          <svg
-            className="w-7 h-7 text-white"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      <AnimatePresence>
+        {showScrollHint && (
+          <motion.button
+            key="scroll-hint"
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+              }
+            }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.3 }}
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[3] group pointer-events-auto"
+            aria-label="아래로 스크롤"
           >
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </div>
-      </motion.button>
+            <div className="flex flex-col items-center gap-1 animate-bounce duration-1000">
+              <span className="text-2xl font-extrabold text-center tracking-[0.2em] text-white/90 px-3 py-1 rounded-full ">
+                SCROLL
+              </span>
+              <svg
+                className="w-7 h-7 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
