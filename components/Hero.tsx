@@ -129,7 +129,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.3 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[3] group pointer-events-auto"
+            className="absolute bottom-6 left-0 right-0 z-[3] flex justify-center pointer-events-auto"
             aria-label="아래로 스크롤"
           >
             <div className="flex flex-col items-center gap-1 animate-bounce duration-1000">

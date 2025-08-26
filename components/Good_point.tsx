@@ -51,7 +51,7 @@ const ContentSection = ({
 
   const imageBlock = (
     <motion.div variants={imageVariants} className="w-full md:w-2/5 flex justify-center items-center mt-12 md:mt-0">
-      <div className="relative w-full max-w-md md:h-[350px]">
+      <div className="relative w-full max-w-md md:h-[350px] mx-auto">
         <motion.img
           src={imageUrl}
           alt={title}
@@ -63,14 +63,16 @@ const ContentSection = ({
         {showOverlayNav && (
           <>
             <button
-              onClick={onPrev}
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onPrev && onPrev(); }}
               className="absolute top-1/2 -translate-y-1/2 left-2 w-12 h-12 rounded-full bg-[#9A3434] text-white text-2xl flex items-center justify-center active:scale-95 md:hidden"
               aria-label="Previous"
             >
               ‹
             </button>
             <button
-              onClick={onNext}
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onNext && onNext(); }}
               className="absolute top-1/2 -translate-y-1/2 right-2 w-12 h-12 rounded-full bg-[#9A3434] text-white text-2xl flex items-center justify-center active:scale-95 md:hidden"
               aria-label="Next"
             >
@@ -87,9 +89,9 @@ const ContentSection = ({
       ref={ref}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      className="flex flex-col md:flex-row justify-center items-center w-full max-w-7xl mx-auto py-15 px-8"
+      className="flex flex-col md:flex-row justify-center md:justify-between items-center w-full max-w-7xl mx-auto py-15 px-8"
     >
-      <div className={`w-full flex flex-col md:flex-row justify-between items-center pb-20 ${textPosition === 'right' ? 'md:flex-row-reverse' : ''}`}>
+      <div className={`w-full flex flex-col md:flex-row md:justify-between justify-center items-center pb-20 ${textPosition === 'right' ? 'md:flex-row-reverse' : ''}`}>
         {textBlock}
         {imageBlock}
       </div>
@@ -101,13 +103,55 @@ const SelfBaking = () => {
   const [mobileIndex, setMobileIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const total = 5;
-  const goPrev = () => { setDirection(-1); setMobileIndex((i) => (i - 1 + total) % total); };
-  const goNext = () => { setDirection(1); setMobileIndex((i) => (i + 1) % total); };
+
+  const lockScrollDuring = () => {
+    if (typeof window === 'undefined') return () => {};
+    if (window.innerWidth >= 768) return () => {};
+    const scrollY = window.scrollY;
+    const original = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow,
+    };
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.position = original.position;
+      document.body.style.top = original.top;
+      document.body.style.left = original.left;
+      document.body.style.right = original.right;
+      document.body.style.width = original.width;
+      document.body.style.overflow = original.overflow;
+      window.scrollTo(0, scrollY);
+    };
+  };
+
+  const goPrev = () => {
+    const unlock = lockScrollDuring();
+    setDirection(-1);
+    setMobileIndex((i) => (i - 1 + total) % total);
+    setTimeout(() => unlock && unlock(), 350);
+  };
+  const goNext = () => {
+    const unlock = lockScrollDuring();
+    setDirection(1);
+    setMobileIndex((i) => (i + 1) % total);
+    setTimeout(() => unlock && unlock(), 350);
+  };
+
   const slideVariants = {
     enter: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
     center: { x: 0, opacity: 1 },
     exit: (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0 })
   };
+
   return (
     <div className="bg-[#FBEFDD] pb-24">
       <h1 className="text-center mt-20 mb-10 text-5xl md:text-7xl font-extrabold text-[#9A3434] uppercase leading-none tracking-tight pb-20">
@@ -125,6 +169,7 @@ const SelfBaking = () => {
             animate="center"
             exit="exit"
             transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="px-4"
           >
             {mobileIndex === 0 && (
               <ContentSection textPosition="left" title="CAPUTO GLUTEN FREE" imageUrl="/images/good_point/gluten.png" showOverlayNav onPrev={goPrev} onNext={goNext}>
@@ -184,6 +229,8 @@ const SelfBaking = () => {
           </div>
         </div>
       </div>
+
+      {/* 데스크탑 그리드 */}
       <div className="hidden md:block">
       <ContentSection
         textPosition="left"
