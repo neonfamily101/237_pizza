@@ -68,7 +68,7 @@ const CoreValues = () => {
             style={{ 
               clipPath: clipPath,
             }}
-            className="absolute w-[70vw] h-[70vw] md:w-[40vh] md:h-[40vh] max-w-[90vw] max-h-[90vw] md:max-w-[800px] md:max-h-[800px] z-10 shadow-2xl"
+            className="absolute w-[70vw] h-[70vw] md:w-[400vh] md:h-[400vh] max-w-[90vw] max-h-[90vw] md:max-w-[800px] md:max-h-[800px] z-10 shadow-2xl"
           >
             <div className="absolute inset-0 bg-black/40 z-20"></div>
             {values.map((item, index) => {
