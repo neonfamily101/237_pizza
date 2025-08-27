@@ -64,9 +64,9 @@ const ContentSection = ({
           <>
             <button
               type="button"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onPrev && onPrev(); }}
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onNext && onNext(); }}
               className="absolute top-1/2 -translate-y-1/2 left-2 w-12 h-12 rounded-full bg-[#9A3434] text-white text-2xl flex items-center justify-center active:scale-95 md:hidden"
-              aria-label="Previous"
+              aria-label="Next"
             >
               ‹
             </button>

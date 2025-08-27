@@ -116,7 +116,7 @@ export default function IrregularImageGallery() {
   ];
 
   return (
-    <div className="w-screen min-h-screen bg-[#F8F4E9] relative overflow-hidden">
+    <div className="w-full min-h-screen bg-[#F8F4E9] relative overflow-hidden">
       <style>{`
 @keyframes fly {
   0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0.3; }
@@ -238,7 +238,3 @@ function GalleryItem({ src, alt, index }: { src: string; alt: string; index: num
     </motion.figure>
   );
 }
-
-// ——— Tailwind additions (optional)
-// Add these to your global.css if you want smoother column gaps on Safari
-// .columns-2, .columns-3, .columns-4 { column-gap: theme(spacing.5); }

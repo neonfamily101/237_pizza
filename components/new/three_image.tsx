@@ -1,86 +1,119 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+  useMotionTemplate
+} from 'framer-motion';
 
 const values = [
   {
-    title: "Authenticity",
-    description: "We honor the centuries-old tradition of Neapolitan pizza, bringing its authentic spirit to the modern era with our gluten-free promise.",
-    imageUrl: "/images/hero/pizza.model.jpg",
+    title: "237 PIZZA",
+    videoUrl: "/videos/direction.webm",
+    bgColor: "#2E2A2B"
   },
   {
-    title: "Quality",
-    description: "From our specially milled flour to the freshest toppings, we never compromise on quality. Every ingredient is chosen to create the ultimate pizza experience.",
-    imageUrl: "/images/three_image/pizza_girl1.png",
+    title: "237 PIZZA",
+    videoUrl: "/videos/firepit.webm",
+    bgColor: "#4B3F3A"
   },
   {
-    title: "Inclusivity",
-    description: "We believe everyone deserves great pizza. Our 100% gluten-free kitchen ensures that people with dietary restrictions can dine with confidence and joy.",
-    imageUrl: "/images/three_image/pizza_girl.png",
+    title: "237 PIZZA",
+    videoUrl: "/videos/make_pizza.webm",
+    bgColor: "#2A3B4A"
   },
 ];
 
-// 1. 컴포넌트에 className prop을 추가하여 부모로부터 스타일을 받을 수 있도록 합니다.
-const ParallaxSection = ({ title, description, imageUrl, className }: { title: string, description: string, imageUrl: string, className?: string }) => {
-  const ref = useRef(null);
+const CoreValues = () => {
+  const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
+    target: targetRef,
+    offset: ['start start', 'end end'],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile(); // 초기 로드 시 체크
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const newIndex = Math.min(Math.floor(latest * values.length), values.length - 1);
+    setActiveIndex(newIndex);
+  });
+
+  const clipPathRadius = useTransform(scrollYProgress, [0, 0.1], [0, 50]);
+  const clipPath = useMotionTemplate`circle(${clipPathRadius}% at 50% 50%)`;
+  
+  const textZ = useTransform(scrollYProgress, [0, 0.5, 1], isMobile ? [0, 0, 0] : [200, 0, 200]);
+  
   return (
-    // 2. 전달받은 className을 적용하고, 높이를 min-h-screen으로 변경합니다.
-    <section ref={ref} className={`relative min-h-screen flex items-center justify-center overflow-hidden ${className}`}>
+    <div ref={targetRef} className="relative h-[700vh]">
       <motion.div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `url(${imageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          y,
-        }}
-      />
-      <div className="absolute inset-0 bg-black/50 z-10" />
-      <div className="relative z-20 text-center text-white p-8">
-        <motion.h2
-          // 3. 폰트 크기를 모바일 친화적으로 세분화합니다.
-          className="text-5xl sm:text-6xl md:text-8xl font-extrabold uppercase"
-          initial={{ opacity: 0, y: -50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
-          {title}
-        </motion.h2>
-        <motion.p
-          className="text-lg md:text-xl max-w-2xl mx-auto mt-4"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          {description}
-        </motion.p>
-      </div>
-    </section>
-  );
-};
+        animate={{ backgroundColor: values[activeIndex]?.bgColor || "#2a2a2a" }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+        className="sticky top-0 h-screen flex items-center justify-center"
+      >
+        <div className="w-full h-full flex items-center justify-center">
+          
+          <motion.div
+            style={{ 
+              clipPath: clipPath,
+            }}
+            className="absolute w-[70vw] h-[70vw] md:w-[40vh] md:h-[40vh] max-w-[90vw] max-h-[90vw] md:max-w-[800px] md:max-h-[800px] z-10 shadow-2xl"
+          >
+            <div className="absolute inset-0 bg-black/40 z-20"></div>
+            {values.map((item, index) => {
+              const length = values.length;
+              const start = index / length;
+              const end = (index + 1) / length;
+              
+              const opacity = useTransform(scrollYProgress, [start - 0.08, start, end, end + 0.08], [0, 1, 1, 0]);
+              const scale = useTransform(scrollYProgress, [start, end], [1, 1.1]);
 
-const CoreValues = () => {
-  return (
-    <div>
-      {values.map((value, index) => (
-        <ParallaxSection
-          key={index}
-          {...value}
-          // 4. 첫 번째 아이템(index === 0)일 경우에만 모바일에서 숨기는 클래스를 전달합니다.
-          // md(768px) 사이즈 이상일 때만 flex로 보이게 됩니다.
-          className={index === 0 ? 'hidden md:flex' : ''}
-        />
-      ))}
+              return (
+                <motion.div key={item.videoUrl} className="absolute inset-0" style={{ opacity }}>
+                  <motion.video
+                    style={{ scale, filter: 'grayscale(100%)' }} 
+                    className="w-full h-full object-cover"
+                    src={item.videoUrl}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          <motion.div 
+            style={{ translateZ: textZ }}
+            className="relative w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-between h-4/5 z-20"
+          >
+            <div className="flex justify-between items-start">
+              <span className="text-white/80 font-serif leading-none select-none" style={{ fontSize: 'clamp(2.5rem, 20vw, 12rem)' }}>MA</span>
+              <span className="text-white/80 font-serif leading-none select-none" style={{ fontSize: 'clamp(2.5rem, 20vw, 12rem)' }}>KE</span>
+            </div>
+            <div className="flex justify-between items-end">
+              <span className="text-white/80 font-serif leading-none select-none" style={{ fontSize: 'clamp(2.5rem, 20vw, 12rem)' }}>PI</span>
+              <span className="text-white/80 font-serif leading-none select-none" style={{ fontSize: 'clamp(2.5rem, 20vw, 12rem)' }}>ZZA</span>
+            </div>
+          </motion.div>
+
+          <div className="absolute top-1/2 left-4 md:left-12 -translate-y-1/2 text-white/40 font-mono text-xs [writing-mode:vertical-rl] tracking-[0.3em] uppercase select-none z-30">Scroll</div>
+          <div className="absolute bottom-8 left-4 md:left-8 text-white/80 font-mono text-sm uppercase tracking-widest z-30"><p>{values[activeIndex]?.title}</p></div>
+          <motion.div className="absolute bottom-0 left-0 right-0 h-1 bg-white/80 z-30" style={{ scaleX: scrollYProgress, transformOrigin: 'left' }} />
+        </div>
+      </motion.div>
     </div>
   );
 };
