@@ -155,7 +155,7 @@ const SelfBaking = () => {
   return (
     <div className="bg-[#FBEFDD] pb-24">
       <h1 className="text-center mt-20 mb-10 text-5xl md:text-7xl font-extrabold text-[#9A3434] uppercase leading-none tracking-tight pb-20">
-        237 피자만의 차별점
+        237 PIZZA's DIFFERENCE
       </h1>
 
       {/* 모바일: 하나씩 슬라이드 */}
