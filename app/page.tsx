@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#FBEFDD]">
       <Hero />
-      <YtImage  style={{backgroundColor: "#f5e6d3"}}/>
+      <YtImage />
       <Good_point/>
       <MakingProcess />
       <News />
