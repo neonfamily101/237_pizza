@@ -11,7 +11,7 @@ const Footer = () => {
 
   const storeInfo = [
     { label: 'CEO', value: '최영신 (崔永信, Choi young shin)' },
-    { label: '영업시간', value: '* 영업일 기준 10:30 ~ 22:00' },
+    { label: '영업시간', value: '* 영업일 기준 17:00 ~ 22:00 매주 일요일 휴무' },
     { label: '전화', value: '02-797-2377 / 010-2311-1958' },
   ]
 
